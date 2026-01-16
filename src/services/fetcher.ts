@@ -2,7 +2,7 @@ import axios, {type AxiosError, type AxiosInstance, type AxiosRequestConfig, typ
 
 const getClient = () => {
     return axios.create({
-        baseURL: ""
+        baseURL: "youtube.com"
     })
 }
 

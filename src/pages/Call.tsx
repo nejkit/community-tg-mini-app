@@ -31,7 +31,7 @@ export default function CallPage() {
 
     if (preJoin) {
         return <LiveKitRoom
-            serverUrl={""}
+            serverUrl={roomData.serverUrl}
             token={roomData.token}
             audio={preJoin.audioEnabled}
             video={preJoin.videoEnabled}
@@ -43,7 +43,6 @@ export default function CallPage() {
     return (
         <PreJoin
             defaults={{
-                username: "Guest",
                 audioEnabled: true,
                 videoEnabled: false
             }}
