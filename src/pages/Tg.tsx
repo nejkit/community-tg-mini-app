@@ -2,6 +2,7 @@ import WebApp from "@twa-dev/sdk";
 
 export default function initTelegram() {
     console.log(WebApp)
+
     WebApp.ready();
     WebApp.expand();
 
