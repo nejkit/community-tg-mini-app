@@ -1,5 +1,4 @@
 import {useEffect, useState} from "react";
-import initTelegram from "./Tg.tsx";
 import {LiveKitRoom, PreJoin} from "@livekit/components-react";
 import WebApp from "@twa-dev/sdk";
 import type {GetJoinRoomParamsResponseDto} from "../services/interfaces.ts";
@@ -18,7 +17,6 @@ export default function CallPage() {
     const [roomData, setRoomData] = useState<GetJoinRoomParamsResponseDto | undefined>()
 
     useEffect(() => {
-        initTelegram()
         getJoinParams(WebApp.initData).then(
             res => setRoomData(res)
         )
