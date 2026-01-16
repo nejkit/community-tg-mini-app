@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {LiveKitRoom, PreJoin} from "@livekit/components-react";
+import {AudioConference, LiveKitRoom, PreJoin} from "@livekit/components-react";
 import WebApp from "@twa-dev/sdk";
 import type {GetJoinRoomParamsResponseDto} from "../services/interfaces.ts";
 import {getJoinParams} from "../services/api.ts";
@@ -10,8 +10,6 @@ type PreJoinValues = {
     username: string;
     audioEnabled: boolean;
     videoEnabled: boolean;
-    audioDeviceId?: string;
-    videoDeviceId?: string;
 };
 
 export default function CallPage() {
@@ -36,7 +34,7 @@ export default function CallPage() {
             audio={preJoin.audioEnabled}
             video={preJoin.videoEnabled}
         >
-
+            <AudioConference/>
         </LiveKitRoom>
     }
 
