@@ -2,7 +2,7 @@ import axios, {type AxiosError, type AxiosInstance, type AxiosRequestConfig, typ
 
 const getClient = () => {
     return axios.create({
-        baseURL: "youtube.com"
+        baseURL: "https://imperscriptible-fe-tectricial.ngrok-free.dev"
     })
 }
 
