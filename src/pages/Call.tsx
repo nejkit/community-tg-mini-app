@@ -28,14 +28,19 @@ export default function CallPage() {
     }
 
     if (preJoin) {
-        return <LiveKitRoom
-            serverUrl={roomData.serverUrl}
-            token={roomData.token}
-            audio={preJoin.audioEnabled}
-            video={preJoin.videoEnabled}
-        >
-            <AudioConference/>
-        </LiveKitRoom>
+        return (
+            <>
+                <h1>Connected</h1>
+                <LiveKitRoom
+                    serverUrl={roomData.serverUrl}
+                    token={roomData.token}
+                    audio={preJoin.audioEnabled}
+                    video={preJoin.videoEnabled}
+                    onError={(err) => console.error("Failed to connect: ", err)}
+                >
+                    <AudioConference/>
+                </LiveKitRoom></>
+        )
     }
 
     return (
