@@ -4,6 +4,8 @@ import WebApp from "@twa-dev/sdk";
 import type {GetJoinRoomParamsResponseDto} from "../services/interfaces.ts";
 import {getJoinParams} from "../services/api.ts";
 
+const tg = (WebApp as any)?.default ?? WebApp;
+
 type PreJoinValues = {
     username: string;
     audioEnabled: boolean;
@@ -17,7 +19,7 @@ export default function CallPage() {
     const [roomData, setRoomData] = useState<GetJoinRoomParamsResponseDto | undefined>()
 
     useEffect(() => {
-        getJoinParams(WebApp.initData).then(
+        getJoinParams(tg.initData).then(
             res => setRoomData(res)
         )
     }, []);

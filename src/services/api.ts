@@ -6,7 +6,7 @@ export const getJoinParams = (userData: string) => {
         method: 'GET',
         url: '/api/1/room-info',
         headers: {
-            Authorization: `Bearer ${userData}`
+            Authorization: `${userData}`
         }
     })
 }
