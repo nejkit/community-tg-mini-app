@@ -18,7 +18,10 @@ export default function CallPage() {
 
     useEffect(() => {
         getJoinParams(tg.initData).then(
-            res => setRoomData(res)
+            res => {
+                setRoomData(res)
+                console.log(JSON.stringify(res))
+            }
         )
     }, []);
 
@@ -45,8 +48,6 @@ export default function CallPage() {
 
     return (
         <>
-            <p>{roomData.token}</p>
-            <p>{roomData.serverUrl}</p>
             <PreJoin
                 defaults={{
                     audioEnabled: true,
