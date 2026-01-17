@@ -44,17 +44,21 @@ export default function CallPage() {
     }
 
     return (
-        <PreJoin
-            defaults={{
-                audioEnabled: true,
-                videoEnabled: false
-            }}
-            joinLabel={"Join to room"}
-            userLabel={"Guest"}
-            micLabel={"Microphone"}
-            camLabel={"Camera"}
-            debug={true}
-            onSubmit={setPreJoin}
-        />
+        <>
+            <p>{roomData.token}</p>
+            <p>{roomData.serverUrl}</p>
+            <PreJoin
+                defaults={{
+                    audioEnabled: true,
+                    videoEnabled: false
+                }}
+                joinLabel={"Join to room"}
+                userLabel={"Guest"}
+                micLabel={"Microphone"}
+                camLabel={"Camera"}
+                debug={true}
+                onSubmit={setPreJoin}
+            />
+        </>
     )
 }
