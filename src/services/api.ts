@@ -6,7 +6,8 @@ export const getJoinParams = (userData: string) => {
         method: 'GET',
         url: '/api/v1/room-info',
         headers: {
-            Authorization: `${userData}`
+            Authorization: `${userData}`,
+            'ngrok-skip-browser-warning': true
         }
     })
 }

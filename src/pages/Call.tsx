@@ -32,8 +32,7 @@ export default function CallPage() {
 
     if (preJoin) {
         return (
-            <>
-                <h1>Connected</h1>
+            <>-
                 <LiveKitRoom
                     serverUrl={roomData.serverUrl}
                     token={roomData.token}
