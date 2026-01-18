@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { AudioConference, LiveKitRoom } from "@livekit/components-react";
+import { LiveKitRoom } from "@livekit/components-react";
 import WebApp from "@twa-dev/sdk";
 import type { GetJoinRoomParamsResponseDto } from "../services/interfaces.ts";
 import { getJoinParams } from "../services/api.ts";
 import "./call.css";
 import { CustomPreJoin } from "../components/PreJoin.tsx";
+import {CallUI} from "../components/Room.tsx";
 
 const tg = (WebApp as any)?.default ?? WebApp;
 
@@ -53,7 +54,7 @@ export default function CallPage() {
                                         video={false}
                                         onError={(err) => console.error("Failed to connect: ", err)}
                                     >
-                                        <AudioConference />
+                                        <CallUI/>
                                     </LiveKitRoom>
                                 </div>
                             )}
