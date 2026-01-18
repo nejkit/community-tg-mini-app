@@ -2,17 +2,26 @@
 
 .cpj {
     width: 100%;
-    max-width: 420px;          /* чтобы не раздувалось на широких */
+    max-width: 460px;
     margin: 0 auto;
 
-    padding: 14px 12px 12px;   /* было 18/16 — слишком жирно на мобиле */
-    border-radius: 16px;       /* меньше радиус */
-    border: 1px solid rgba(255,255,255,0.08);
-    box-shadow: 0 10px 26px rgba(0,0,0,0.28);
+    /* важно: не давим контент, но и не делаем гигантским */
+    min-height: min(560px, calc(100svh - 120px));
+    max-height: calc(100svh - 90px);
 
-    background: linear-gradient(180deg, #1f1f1f, #151515);
+    padding: 18px 16px;
+    border-radius: 18px;
+
+    background: linear-gradient(180deg, #1f1f1f, #141414);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.35);
     color: #fff;
 
+    display: flex;
+    flex-direction: column;
+
+    /* если не помещается по высоте — скроллим внутри */
+    overflow: hidden;
     box-sizing: border-box;
 }
 

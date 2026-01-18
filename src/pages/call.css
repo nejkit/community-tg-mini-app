@@ -1,32 +1,19 @@
 /* Telegram-friendly full screen + safe area */
 .tg-page {
-    min-height: 100vh;
     min-height: 100svh;
-    padding: calc(16px + env(safe-area-inset-top)) 16px
-    calc(16px + env(safe-area-inset-bottom)) 16px;
+    padding: env(safe-area-inset-top) 10px env(safe-area-inset-bottom) 10px;
     display: grid;
     place-items: center;
-    background: radial-gradient(1200px 600px at 50% -10%, rgba(120, 120, 255, 0.18), transparent),
-    radial-gradient(900px 500px at 10% 20%, rgba(0, 200, 255, 0.12), transparent),
-    radial-gradient(900px 500px at 90% 80%, rgba(255, 140, 0, 0.10), transparent);
 }
 
-/* Content width */
 .tg-container {
-    width: min(520px, 100%);
-    display: grid;
-    gap: 12px;
+    width: 100%;
+    max-width: 520px;
 }
 
-/* Nice card */
 .card {
-    background: linear-gradient(180deg, #1f1f1f, #161616);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    width: 100%;
     border-radius: 18px;
-    box-shadow:
-            0 10px 30px rgba(0, 0, 0, 0.10),
-            0 1px 0 rgba(255, 255, 255, 0.6) inset;
     overflow: hidden;
 }
 
