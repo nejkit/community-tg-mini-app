@@ -1,110 +1,127 @@
-/* ===== DARK THEME (Telegram-style) ===== */
+/* ===== Base / safety ===== */
+.cpj, .cpj * { box-sizing: border-box; }
+.cpj input, .cpj select, .cpj button { font: inherit; }
 
+/* ===== Card (dark) ===== */
 .cpj {
     width: 100%;
     max-width: 460px;
     margin: 0 auto;
 
-    /* важно: не давим контент, но и не делаем гигантским */
-    min-height: min(560px, calc(100svh - 120px));
+    /* не “сплюснуто”: карточка занимает доступную высоту, но не жрёт весь экран */
+    min-height: min(620px, calc(100svh - 120px));
     max-height: calc(100svh - 90px);
 
-    padding: 18px 16px;
+    padding: 16px 14px;
     border-radius: 18px;
 
-    background: linear-gradient(180deg, #1f1f1f, #141414);
+    background: linear-gradient(180deg, #202020, #141414);
     border: 1px solid rgba(255,255,255,0.08);
-    box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+    box-shadow: 0 18px 44px rgba(0,0,0,0.38);
     color: #fff;
 
     display: flex;
     flex-direction: column;
-
-    /* если не помещается по высоте — скроллим внутри */
     overflow: hidden;
-    box-sizing: border-box;
 }
 
-/* ===== HEADERS ===== */
-
-.cpjTitle {
-    font-size: 20px;
-    font-weight: 800;
+/* ===== Layout sections ===== */
+.cpjHeader {
     text-align: center;
-    margin-bottom: 2px;
+    padding: 6px 4px 10px;
+}
+
+.cpjBody {
+    flex: 1;
+    overflow: auto;          /* ключ: если мало высоты — скролл внутри, а не сжатие */
+    padding: 6px 2px 10px;
+    display: grid;
+    gap: 14px;
+}
+
+.cpjFooter {
+    text-align: center;
+    font-size: 12px;
+    opacity: 0.55;
+    padding-top: 6px;
+}
+
+/* ===== Titles ===== */
+.cpjTitle {
+    font-size: 22px;
+    font-weight: 850;
+    line-height: 1.15;
 }
 
 .cpjSubtitle {
+    margin-top: 6px;
     font-size: 13px;
     opacity: 0.65;
-    text-align: center;
-    margin-bottom: 6px;
+    line-height: 1.35;
 }
 
-/* section title like "Join voice room" */
 .cpjSection {
     font-size: 14px;
-    font-weight: 700;
-    opacity: 0.85;
-    margin-top: 4px;
+    font-weight: 750;
+    opacity: 0.9;
+    margin-top: 2px;
 }
 
-/* ===== LABELS ===== */
-
+/* ===== Form ===== */
 .cpjLabel {
     display: grid;
-    gap: 6px;
+    gap: 8px;
     font-size: 12px;
-    opacity: 0.7;
+    opacity: 0.72;
 }
 
-/* ===== INPUTS ===== */
-
-.cpjInput{
-    height: 42px;
+.cpjInput,
+.cpjSelect {
+    width: 100%;
+    max-width: 100%;
+    height: 44px;
     border-radius: 14px;
     border: 1px solid rgba(255,255,255,0.12);
     padding: 0 14px;
     font-size: 14px;
-    color: #ffffff;
+    color: #fff;
     background: rgba(255,255,255,0.06);
 }
 
+.cpjInput::placeholder {
+    color: rgba(255,255,255,0.42);
+}
+
+/* select: не раздуваем ширину длинными лейблами */
 .cpjSelect {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.cpjInput::placeholder {
-    color: rgba(255,255,255,0.45);
+.cpjSelect option {
+    background: #1c1c1c;
+    color: #fff;
 }
 
-/* ===== BUTTONS ===== */
-
-/* только для ряда с микрофоном */
+/* ===== Buttons ===== */
 .cpjRow {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* mic по центру */
 }
-
-/* чтобы кнопка не была слишком широкой */
-.cpjRow .cpjBtn {
-    width: min(320px, 100%);
-}
-
 
 .cpjBtn {
-    height: 42px;
+    height: 44px;
     border-radius: 14px;
     border: 1px solid rgba(255,255,255,0.14);
     background: rgba(255,255,255,0.06);
-    color: #ffffff;
-    font-weight: 600;
+    color: #fff;
+    font-weight: 700;
     font-size: 14px;
+}
+
+.cpjMicBtn {
+    width: min(320px, 100%); /* на широких не во всю ширину, на узких — 100% */
 }
 
 .cpjBtn.on {
@@ -113,68 +130,53 @@
 }
 
 .cpjBtn.off {
-    opacity: 0.6;
+    opacity: 0.65;
 }
 
-/* Join button */
+/* Join */
 .cpjJoin {
-    height: 46px;
+    width: 100%;
+    height: 48px;
     border-radius: 16px;
     border: 0;
-    font-weight: 800;
+    font-weight: 850;
     font-size: 16px;
     background: linear-gradient(180deg, #2a2a2a, #111111);
-    color: #ffffff;
+    color: #fff;
 }
 
 .cpjJoin:disabled {
     opacity: 0.35;
 }
 
-/* ===== DEVICE SELECT ===== */
-
-.cpjSelect option {
-    background: #1c1c1c;
-    color: #ffffff;
-}
-
-/* ===== TEXT ===== */
-
+/* Errors */
 .cpjError {
     font-size: 12px;
     color: #ff6b6b;
 }
 
-.cpjHint {
-    text-align: center;
-    font-size: 12px;
-    opacity: 0.55;
-    margin-top: 2px;
-}
-
-.cpj * {
-    box-sizing: border-box;
-}
-
-.cpjInput,
-.cpjSelect,
-.cpjBtn,
-.cpjJoin {
-    width: 100%;
-    max-width: 100%;
-}
-
+/* ===== Small phones ===== */
 @media (max-width: 360px) {
     .cpj {
         max-width: 100%;
-        border-radius: 14px;
-        padding: 12px 10px 10px;
+        border-radius: 16px;
+        padding: 14px 12px;
+        min-height: calc(100svh - 90px);
+        max-height: calc(100svh - 70px);
     }
 
-    .cpjTitle { font-size: 18px; }
+    .cpjTitle { font-size: 20px; }
     .cpjSubtitle { font-size: 12px; }
+    .cpjBody { gap: 12px; }
 
-    .cpjJoin { height: 44px; font-size: 15px; }
-    .cpjBtn { height: 40px; font-size: 13px; }
-    .cpjInput, .cpjSelect { height: 40px; font-size: 13px; }
+    .cpjInput, .cpjSelect, .cpjBtn { height: 42px; font-size: 13px; }
+    .cpjJoin { height: 46px; font-size: 15px; }
+}
+
+/* ===== Low height screens (keyboard / small devices) ===== */
+@media (max-height: 700px) {
+    .cpj {
+        min-height: calc(100svh - 80px);
+        max-height: calc(100svh - 60px);
+    }
 }

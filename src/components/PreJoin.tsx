@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import "./styles.css"
+import "./styles.css";
 
 type Props = {
     defaultName?: string;
@@ -14,9 +14,9 @@ type AudioDevice = { deviceId: string; label: string };
 
 export function CustomPreJoin({ defaultName = "Guest", onJoin }: Props) {
     const [username, setUsername] = useState(defaultName);
-    const [audioEnabled, setAudioEnabled] = useState(true);
+    const [audioEnabled, setAudioEnabled] = useState(false);
     const [devices, setDevices] = useState<AudioDevice[]>([]);
-    const [audioDeviceId, setAudioDeviceId] = useState<string | undefined>();
+    const [audioDeviceId, setAudioDeviceId] = useState<string>("");
     const [permGranted, setPermGranted] = useState(false);
     const [err, setErr] = useState<string | null>(null);
 
@@ -30,6 +30,8 @@ export function CustomPreJoin({ defaultName = "Guest", onJoin }: Props) {
             }));
 
         setDevices(audios);
+
+        // если deviceId ещё не выбран — поставим первый
         if (!audioDeviceId && audios[0]) setAudioDeviceId(audios[0].deviceId);
     }
 
@@ -39,7 +41,7 @@ export function CustomPreJoin({ defaultName = "Guest", onJoin }: Props) {
             await navigator.mediaDevices.getUserMedia({ audio: true });
             setPermGranted(true);
             await loadDevices();
-        } catch (e: any) {
+        } catch {
             setErr("Microphone access denied");
             setPermGranted(false);
             setAudioEnabled(false);
@@ -48,13 +50,14 @@ export function CustomPreJoin({ defaultName = "Guest", onJoin }: Props) {
 
     function toggleMic() {
         setAudioEnabled((prev) => {
-            if (!prev) enableMic();
-            return !prev;
+            const next = !prev;
+            if (next) enableMic();
+            return next;
         });
     }
 
     useEffect(() => {
-        // подгрузить девайсы, если уже есть доступ
+        // попробуем подгрузить девайсы (labels могут быть пустые до разрешения)
         loadDevices();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -64,66 +67,76 @@ export function CustomPreJoin({ defaultName = "Guest", onJoin }: Props) {
         return permGranted && Boolean(audioDeviceId);
     }, [audioEnabled, permGranted, audioDeviceId]);
 
+    const selectedLabel = useMemo(() => {
+        return devices.find((d) => d.deviceId === audioDeviceId)?.label ?? "";
+    }, [devices, audioDeviceId]);
+
     return (
         <div className="cpj">
-            <div className="cpjTitle">Voice room</div>
-            <div className="cpjSubtitle">Connect and talk instantly</div>
+            <div className="cpjHeader">
+                <div className="cpjTitle">Voice room</div>
+                <div className="cpjSubtitle">Connect and talk instantly</div>
+            </div>
 
-            <div className="cpjSection">Join voice room</div>
+            <div className="cpjBody">
+                <div className="cpjSection">Join voice room</div>
 
-            <label className="cpjLabel">
-                Name
-                <input
-                    className="cpjInput"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Your name"
-                />
-            </label>
+                <label className="cpjLabel">
+                    Name
+                    <input
+                        className="cpjInput"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Your name"
+                        autoComplete="name"
+                    />
+                </label>
 
-            <div className="cpjRow">
+                <div className="cpjRow">
+                    <button
+                        type="button"
+                        className={`cpjBtn cpjMicBtn ${audioEnabled ? "on" : "off"}`}
+                        onClick={toggleMic}
+                    >
+                        {audioEnabled ? "🎙 Mic ON" : "🔇 Mic OFF"}
+                    </button>
+                </div>
+
+                <label className="cpjLabel">
+                    Microphone device
+                    <select
+                        className="cpjSelect"
+                        title={selectedLabel}
+                        value={audioDeviceId}
+                        onChange={(e) => setAudioDeviceId(e.target.value)}
+                        disabled={!audioEnabled || !permGranted}
+                    >
+                        {!audioDeviceId && (
+                            <option value="" disabled>
+                                {audioEnabled ? "Choose microphone" : "Microphone is off"}
+                            </option>
+                        )}
+                        {devices.map((d) => (
+                            <option key={d.deviceId} value={d.deviceId} title={d.label}>
+                                {d.label}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+
+                {err && <div className="cpjError">{err}</div>}
+
                 <button
                     type="button"
-                    className={`cpjBtn ${audioEnabled ? "on" : "off"}`}
-                    onClick={toggleMic}
+                    className="cpjJoin"
+                    disabled={!canJoin}
+                    onClick={() => onJoin({ username, audioEnabled, audioDeviceId: audioDeviceId || undefined })}
                 >
-                    {audioEnabled ? "🎙 Mic ON" : "🔇 Mic OFF"}
+                    Join
                 </button>
             </div>
 
-            <label className="cpjLabel">
-                Microphone device
-                <select
-                    className="cpjSelect"
-                    value={audioDeviceId ?? ""}
-                    onChange={(e) => setAudioDeviceId(e.target.value)}
-                    disabled={!audioEnabled || !permGranted}
-                >
-                    <option value="" disabled>
-                        {audioEnabled ? "Choose microphone" : "Microphone is off"}
-                    </option>
-                    {devices.map((d) => (
-                        <option key={d.deviceId} value={d.deviceId}>
-                            {d.label}
-                        </option>
-                    ))}
-                </select>
-            </label>
-
-            {err && <div className="cpjError">{err}</div>}
-
-            <button
-                type="button"
-                className="cpjJoin"
-                disabled={!canJoin}
-                onClick={() =>
-                    onJoin({ username, audioEnabled, audioDeviceId })
-                }
-            >
-                Join
-            </button>
-
-            <div className="cpjHint">Tip: headphones reduce echo</div>
+            <div className="cpjFooter">Tip: headphones reduce echo</div>
         </div>
     );
 }
