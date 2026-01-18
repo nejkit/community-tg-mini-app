@@ -1,64 +1,79 @@
-import {useEffect, useState} from "react";
-import {AudioConference, LiveKitRoom, PreJoin} from "@livekit/components-react";
+import { useEffect, useMemo, useState } from "react";
+import { AudioConference, LiveKitRoom } from "@livekit/components-react";
 import WebApp from "@twa-dev/sdk";
-import type {GetJoinRoomParamsResponseDto} from "../services/interfaces.ts";
-import {getJoinParams} from "../services/api.ts";
+import type { GetJoinRoomParamsResponseDto } from "../services/interfaces.ts";
+import { getJoinParams } from "../services/api.ts";
+import "./call.css";
+import {CustomPreJoin} from "../components/PreJoin.tsx";
 
 const tg = (WebApp as any)?.default ?? WebApp;
 
-type PreJoinValues = {
-    username: string;
-    audioEnabled: boolean;
-    videoEnabled: boolean;
-};
-
 export default function CallPage() {
-    const [preJoin, setPreJoin] = useState<PreJoinValues | null>(null);
-    const [roomData, setRoomData] = useState<GetJoinRoomParamsResponseDto | undefined>()
+    const [preJoin, setPreJoin] = useState<{
+        username: string;
+        audioEnabled: boolean;
+        audioDeviceId?: string;
+    } | null>(null);
+    const [roomData, setRoomData] = useState<GetJoinRoomParamsResponseDto | undefined>();
 
     useEffect(() => {
-        getJoinParams(tg.initData).then(
-            res => {
-                setRoomData(res)
-                console.log(JSON.stringify(res))
-            }
-        )
+        // Telegram Mini App: подстраиваемся под высоту и расширяем viewport
+        try {
+            tg?.ready?.();
+            tg?.expand?.();
+        } catch {}
+
+        getJoinParams(tg.initData).then((res) => {
+            setRoomData(res);
+        });
     }, []);
 
-
-    if (!roomData) {
-        return null;
-    }
-
-    if (preJoin) {
-        return (
-            <>-
-                <LiveKitRoom
-                    serverUrl={roomData.serverUrl}
-                    token={roomData.token}
-                    audio={preJoin.audioEnabled}
-                    video={preJoin.videoEnabled}
-                    onError={(err) => console.error("Failed to connect: ", err)}
-                >
-                    <AudioConference/>
-                </LiveKitRoom></>
-        )
-    }
+    const isReady = useMemo(() => Boolean(roomData?.serverUrl && roomData?.token), [roomData]);
 
     return (
-        <>
-            <PreJoin
-                defaults={{
-                    audioEnabled: true,
-                    videoEnabled: false
-                }}
-                joinLabel={"Join to room"}
-                userLabel={"Guest"}
-                micLabel={"Microphone"}
-                camLabel={"Camera"}
-                debug={true}
-                onSubmit={setPreJoin}
-            />
-        </>
-    )
+        <div className="tg-page">
+            <div className="tg-container">
+                <div className="card">
+
+                    {isReady && (
+                        <div className="loading">
+                            <div className="spinner" />
+                            <div>Preparing room…</div>
+                        </div>
+                    )}
+
+                    {!isReady && preJoin && (
+                        <div className="roomWrap">
+                            <LiveKitRoom
+                                serverUrl={roomData!.serverUrl}
+                                token={roomData!.token}
+                                audio={
+                                {
+                                    deviceId: preJoin.audioDeviceId,
+                                }
+                                }
+                                video={false}
+                                onError={(err) => console.error("Failed to connect: ", err)}
+                            >
+                                <AudioConference />
+                            </LiveKitRoom>
+                        </div>
+                    )}
+
+                    {!isReady && !preJoin && (
+                        <div className="prejoinWrap">
+                            <CustomPreJoin
+                                defaultName="Guest"
+                                onJoin={(v) => setPreJoin(v)}
+                            />
+                        </div>
+                    )}
+                </div>
+
+                <div className="hint">
+                    Tip: use headphones to avoid echo
+                </div>
+            </div>
+        </div>
+    );
 }

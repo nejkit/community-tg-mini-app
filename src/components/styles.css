@@ -1,0 +1,137 @@
+/* ===== DARK THEME (Telegram-style) ===== */
+
+.cpj {
+    display: grid;
+    gap: 14px;
+    background: linear-gradient(180deg, #1f1f1f, #161616);
+    border-radius: 20px;
+    padding: 18px 16px 16px 16px;
+    color: #ffffff;
+}
+
+/* ===== HEADERS ===== */
+
+.cpjTitle {
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 2px;
+}
+
+.cpjSubtitle {
+    font-size: 13px;
+    opacity: 0.65;
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+/* section title like "Join voice room" */
+.cpjSection {
+    font-size: 14px;
+    font-weight: 700;
+    opacity: 0.85;
+    margin-top: 4px;
+}
+
+/* ===== LABELS ===== */
+
+.cpjLabel {
+    display: grid;
+    gap: 6px;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* ===== INPUTS ===== */
+
+.cpjInput{
+    height: 42px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 0 14px;
+    font-size: 14px;
+    color: #ffffff;
+    background: rgba(255,255,255,0.06);
+}
+
+.cpjSelect {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cpjInput::placeholder {
+    color: rgba(255,255,255,0.45);
+}
+
+/* ===== BUTTONS ===== */
+
+/* только для ряда с микрофоном */
+.cpjRow {
+    display: flex;
+    justify-content: center;
+}
+
+/* чтобы кнопка не была слишком широкой */
+.cpjRow .cpjBtn {
+    width: min(320px, 100%);
+}
+
+
+.cpjBtn {
+    height: 42px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.06);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.cpjBtn.on {
+    background: rgba(0, 160, 255, 0.18);
+    border-color: rgba(0, 160, 255, 0.45);
+}
+
+.cpjBtn.off {
+    opacity: 0.6;
+}
+
+/* Join button */
+.cpjJoin {
+    height: 46px;
+    border-radius: 16px;
+    border: 0;
+    font-weight: 800;
+    font-size: 16px;
+    background: linear-gradient(180deg, #2a2a2a, #111111);
+    color: #ffffff;
+}
+
+.cpjJoin:disabled {
+    opacity: 0.35;
+}
+
+/* ===== DEVICE SELECT ===== */
+
+.cpjSelect option {
+    background: #1c1c1c;
+    color: #ffffff;
+}
+
+/* ===== TEXT ===== */
+
+.cpjError {
+    font-size: 12px;
+    color: #ff6b6b;
+}
+
+.cpjHint {
+    text-align: center;
+    font-size: 12px;
+    opacity: 0.55;
+    margin-top: 2px;
+}

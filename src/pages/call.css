@@ -1,0 +1,119 @@
+/* Telegram-friendly full screen + safe area */
+.tg-page {
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: calc(16px + env(safe-area-inset-top)) 16px
+    calc(16px + env(safe-area-inset-bottom)) 16px;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(1200px 600px at 50% -10%, rgba(120, 120, 255, 0.18), transparent),
+    radial-gradient(900px 500px at 10% 20%, rgba(0, 200, 255, 0.12), transparent),
+    radial-gradient(900px 500px at 90% 80%, rgba(255, 140, 0, 0.10), transparent);
+}
+
+/* Content width */
+.tg-container {
+    width: min(520px, 100%);
+    display: grid;
+    gap: 12px;
+}
+
+/* Nice card */
+.card {
+    background: linear-gradient(180deg, #1f1f1f, #161616);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 18px;
+    box-shadow:
+            0 10px 30px rgba(0, 0, 0, 0.10),
+            0 1px 0 rgba(255, 255, 255, 0.6) inset;
+    overflow: hidden;
+}
+
+/* Header */
+.cardHeader {
+    padding: 16px 16px 10px 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.subtitle {
+    margin-top: 4px;
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+/* PreJoin wrapper: make LiveKit form look centered */
+.prejoinWrap {
+    padding: 14px 16px 16px 16px;
+}
+
+/* If LiveKit component outputs wide stuff, constrain it */
+.prejoinWrap .lk-prejoin {
+    width: 100%;
+}
+
+/* Room wrapper */
+.roomWrap {
+    padding: 12px 12px 12px 12px;
+}
+
+/* Loading state */
+.loading {
+    padding: 18px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 0, 0, 0.18);
+    border-top-color: rgba(0, 0, 0, 0.55);
+    animation: spin 0.9s linear infinite;
+}
+
+.lk-video-container {
+    display: none;
+}
+
+.lk-button-group-menu {
+    max-height: none !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+/* 2) Схлопываем ТОЛЬКО список устройств */
+.lk-button-group-menu-items {
+    max-height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    transition: max-height 0.25s ease, margin 0.25s ease, padding 0.25s ease;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.hint {
+    text-align: center;
+    font-size: 12px;
+    opacity: 0.65;
+}
