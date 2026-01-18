@@ -1,12 +1,19 @@
 /* ===== DARK THEME (Telegram-style) ===== */
 
 .cpj {
-    display: grid;
-    gap: 14px;
-    background: linear-gradient(180deg, #1f1f1f, #161616);
-    border-radius: 20px;
-    padding: 18px 16px 16px 16px;
-    color: #ffffff;
+    width: 100%;
+    max-width: 420px;          /* чтобы не раздувалось на широких */
+    margin: 0 auto;
+
+    padding: 14px 12px 12px;   /* было 18/16 — слишком жирно на мобиле */
+    border-radius: 16px;       /* меньше радиус */
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 10px 26px rgba(0,0,0,0.28);
+
+    background: linear-gradient(180deg, #1f1f1f, #151515);
+    color: #fff;
+
+    box-sizing: border-box;
 }
 
 /* ===== HEADERS ===== */
@@ -134,4 +141,31 @@
     font-size: 12px;
     opacity: 0.55;
     margin-top: 2px;
+}
+
+.cpj * {
+    box-sizing: border-box;
+}
+
+.cpjInput,
+.cpjSelect,
+.cpjBtn,
+.cpjJoin {
+    width: 100%;
+    max-width: 100%;
+}
+
+@media (max-width: 360px) {
+    .cpj {
+        max-width: 100%;
+        border-radius: 14px;
+        padding: 12px 10px 10px;
+    }
+
+    .cpjTitle { font-size: 18px; }
+    .cpjSubtitle { font-size: 12px; }
+
+    .cpjJoin { height: 44px; font-size: 15px; }
+    .cpjBtn { height: 40px; font-size: 13px; }
+    .cpjInput, .cpjSelect { height: 40px; font-size: 13px; }
 }
