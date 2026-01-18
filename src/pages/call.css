@@ -1,53 +1,77 @@
 /* Telegram-friendly full screen + safe area */
 .tg-page {
     min-height: 100svh;
-    padding: env(safe-area-inset-top) 10px env(safe-area-inset-bottom) 10px;
-    display: grid;
-    place-items: center;
+    padding: calc(10px + env(safe-area-inset-top)) 10px
+    calc(10px + env(safe-area-inset-bottom)) 10px;
+
+    display: flex;
+    justify-content: center;   /* по горизонтали */
+    align-items: stretch;      /* ❗не по центру вертикали */
 }
 
 .tg-container {
     width: 100%;
     max-width: 520px;
+
+    margin-left: auto;   /* 🔑 принудительное центрирование */
+    margin-right: auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    min-height: 0; /* важно для overflow внутри */
 }
 
+* {
+    box-sizing: border-box;
+}
+
+@media (max-width: 420px) {
+    .tg-container {
+        max-width: 100%;
+    }
+
+    .card {
+        border-radius: 16px;
+    }
+}
+
+/* карточка должна уметь занимать высоту */
 .card {
     width: 100%;
+    max-width: 100%;
     border-radius: 18px;
     overflow: hidden;
+
+    margin-left: auto;
+    margin-right: auto;
+    flex: 1;        /* занимает доступную высоту */
+    min-height: 0;  /* чтобы работал overflow */
 }
 
-/* Header */
-.cardHeader {
-    padding: 16px 16px 10px 16px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+/* внутри карточки тоже раскладка */
+.cardInner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
 }
 
-.title {
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 1.2;
+/* скроллится только контент */
+.cardContent {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
 }
 
-.subtitle {
-    margin-top: 4px;
-    font-size: 13px;
-    opacity: 0.7;
-}
-
-/* PreJoin wrapper: make LiveKit form look centered */
+/* убери лишние жирные поля */
 .prejoinWrap {
-    padding: 14px 16px 16px 16px;
+    padding: 12px;
 }
 
-/* If LiveKit component outputs wide stuff, constrain it */
-.prejoinWrap .lk-prejoin {
-    width: 100%;
-}
-
-/* Room wrapper */
 .roomWrap {
-    padding: 12px 12px 12px 12px;
+    padding: 12px;
 }
 
 /* Loading state */
@@ -69,9 +93,20 @@
     animation: spin 0.9s linear infinite;
 }
 
-.lk-video-container {
-    display: none;
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
+
+/* нижний хинт — компактный */
+.hint {
+    text-align: center;
+    font-size: 12px;
+    opacity: 0.65;
+    padding-bottom: 2px;
+}
+
+/* LiveKit tweaks */
+.lk-video-container { display: none; }
 
 .lk-button-group-menu {
     max-height: none !important;
@@ -83,7 +118,6 @@
     background: transparent !important;
 }
 
-/* 2) Схлопываем ТОЛЬКО список устройств */
 .lk-button-group-menu-items {
     max-height: 0 !important;
     overflow: hidden !important;
@@ -95,12 +129,7 @@
     transition: max-height 0.25s ease, margin 0.25s ease, padding 0.25s ease;
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-.hint {
-    text-align: center;
-    font-size: 12px;
-    opacity: 0.65;
+/* на очень низких экранах уменьшаем паддинги */
+@media (max-height: 700px) {
+    .prejoinWrap, .roomWrap { padding: 10px; }
 }
