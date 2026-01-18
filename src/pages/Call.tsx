@@ -35,14 +35,14 @@ export default function CallPage() {
             <div className="tg-container">
                 <div className="card">
 
-                    {isReady && (
+                    {!isReady && (
                         <div className="loading">
                             <div className="spinner" />
                             <div>Preparing room…</div>
                         </div>
                     )}
 
-                    {!isReady && preJoin && (
+                    {isReady && preJoin && (
                         <div className="roomWrap">
                             <LiveKitRoom
                                 serverUrl={roomData!.serverUrl}
@@ -60,7 +60,7 @@ export default function CallPage() {
                         </div>
                     )}
 
-                    {!isReady && !preJoin && (
+                    {isReady && !preJoin && (
                         <div className="prejoinWrap">
                             <CustomPreJoin
                                 defaultName="Guest"
