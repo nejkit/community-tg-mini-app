@@ -1,0 +1,47 @@
+.callAlerts {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.callAlert {
+    min-width: 240px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.callAlert.info {
+    background: #2d7ff9;
+}
+
+.callAlert.warning {
+    background: #f59e0b;
+}
+
+.callAlert.error {
+    background: #ef4444;
+}
+
+.callAlertAction {
+    border: none;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.callAlertAction:hover {
+    background: rgba(255, 255, 255, 0.25);
+}

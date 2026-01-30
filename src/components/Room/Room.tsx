@@ -6,6 +6,8 @@ import {
     useConnectionState,
 } from "@livekit/components-react";
 import { ConnectionState } from "livekit-client";
+import {Alert} from "../Allert/Allert.tsx";
+import "./styles.css";
 
 export function CallUI() {
     const room = useRoomContext();
@@ -43,6 +45,8 @@ export function CallUI() {
                 <div className="callRole">{localParticipant.name}</div>
                 <div className="callStatus">{statusText}</div>
             </div>
+
+            <Alert/>
 
             <div className="callCenter">
                 <button

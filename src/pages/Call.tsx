@@ -4,8 +4,8 @@ import WebApp from "@twa-dev/sdk";
 import type { GetJoinRoomParamsResponseDto } from "../services/interfaces.ts";
 import { getJoinParams } from "../services/api.ts";
 import "./call.css";
-import { CustomPreJoin } from "../components/PreJoin.tsx";
-import {CallUI} from "../components/Room.tsx";
+import { CustomPreJoin } from "../components/PreJoin/PreJoin.tsx";
+import {CallUI} from "../components/Room/Room.tsx";
 
 const tg = (WebApp as any)?.default ?? WebApp;
 
