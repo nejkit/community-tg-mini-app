@@ -95,7 +95,7 @@ export function Alert() {
                 });
             } else {
                 pushAlert({
-                    message: `Disconnected: ${reason ?? "unknown reason"}`,
+                    message: `Disconnected: ${reason?.toString() ?? "unknown reason"}`,
                     type: "warning",
                 });
             }
@@ -187,23 +187,27 @@ export function Alert() {
     ========================= */
 
     return (
-        <div className="callAlerts">
+        <div className="tg-alerts">
             {alerts.map((a) => (
-                <div key={a.id} className={`callAlert ${a.type}`}>
-                    <div className="callAlertText">{a.message}</div>
+                <div className={`tg-alert tg-alert--${a.type}`}>
+                    <div className="tg-alert__icon"/>
+                    <div className="tg-alert__content">
+                        <div className="tg-alert__text">{a.message}</div>
 
-                    {a.submitLabel && a.onSubmit && (
-                        <button
-                            className="callAlertAction"
-                            onClick={() => {
-                                a.onSubmit?.();
-                                setAlerts((x) => x.filter((i) => i.id !== a.id));
-                            }}
-                        >
-                            {a.submitLabel}
-                        </button>
-                    )}
+                        {a.submitLabel && a.onSubmit && (
+                            <button
+                                className="tg-alert__action"
+                                onClick={() => {
+                                    a.onSubmit?.();
+                                    setAlerts((x) => x.filter((i) => i.id !== a.id));
+                                }}
+                            >
+                                {a.submitLabel}
+                            </button>
+                        )}
+                    </div>
                 </div>
+
             ))}
         </div>
     );

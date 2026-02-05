@@ -1,47 +1,102 @@
-.callAlerts {
+/* ===== Alerts container ===== */
+.tg-alerts {
     position: fixed;
-    top: 16px;
+    top: calc(12px + env(safe-area-inset-top));
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
+
+    width: calc(100% - 24px);
+    max-width: 420px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+}
+
+/* ===== Alert ===== */
+.tg-alert {
+    pointer-events: auto;
+
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+
+    padding: 12px 14px;
+    border-radius: 14px;
+
+    background: #1c1c1e;
+    color: #fff;
+
+    box-shadow:
+            0 6px 20px rgba(0,0,0,0.35),
+            0 0 0 1px rgba(255,255,255,0.06);
+
+    animation: tg-alert-in 0.22s ease-out;
+}
+
+/* ===== Icon ===== */
+.tg-alert__icon {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    border-radius: 50%;
+}
+
+/* ===== Content ===== */
+.tg-alert__content {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.callAlert {
-    min-width: 240px;
-    padding: 10px 14px;
-    border-radius: 8px;
-    color: white;
+.tg-alert__text {
     font-size: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    line-height: 1.35;
 }
 
-.callAlert.info {
-    background: #2d7ff9;
+/* ===== Action ===== */
+.tg-alert__action {
+    align-self: flex-start;
+
+    border: none;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+
+    padding: 6px 10px;
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 600;
 }
 
-.callAlert.warning {
+.tg-alert__action:active {
+    transform: scale(0.96);
+}
+
+/* ===== Types ===== */
+.tg-alert--info .tg-alert__icon {
+    background: #0a84ff;
+}
+
+.tg-alert--warning .tg-alert__icon {
     background: #f59e0b;
 }
 
-.callAlert.error {
-    background: #ef4444;
+.tg-alert--error .tg-alert__icon {
+    background: #ff453a;
 }
 
-.callAlertAction {
-    border: none;
-    background: rgba(255, 255, 255, 0.15);
-    color: white;
-    padding: 6px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-}
-
-.callAlertAction:hover {
-    background: rgba(255, 255, 255, 0.25);
+/* ===== Animation ===== */
+@keyframes tg-alert-in {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

@@ -1,13 +1,22 @@
 import WebApp from "@twa-dev/sdk";
 
-export default function initTelegram() {
-    const tg = WebApp;
+function bindTelegramViewport() {
+    const tg = (WebApp as any)?.default ?? WebApp;
+    if (!tg) return;
 
-    tg.ready();
-    tg.expand();
+    const set = () => {
+        document.documentElement.style.setProperty(
+            "--tg-vh",
+            `${tg.viewportHeight}px`
+        );
+        document.documentElement.style.setProperty(
+            "--tg-vw",
+            `${tg.viewportWidth}px`
+        );
+    };
 
-    document.documentElement.style.setProperty(
-        "--tg-theme-bg-color",
-        tg.themeParams.bg_color ?? "#fff"
-    );
+    set();
+    tg.onEvent("viewportChanged", set);
 }
+
+bindTelegramViewport();

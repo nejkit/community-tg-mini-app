@@ -11,7 +11,6 @@ const tg = (WebApp as any)?.default ?? WebApp;
 
 export default function CallPage() {
     const [preJoin, setPreJoin] = useState<{
-        username: string;
         audioEnabled: boolean;
         audioDeviceId?: string;
     } | null>(null);
@@ -19,10 +18,8 @@ export default function CallPage() {
     const [roomData, setRoomData] = useState<GetJoinRoomParamsResponseDto | undefined>();
 
     useEffect(() => {
-        try {
-            tg?.ready?.();
-            tg?.expand?.();
-        } catch {}
+        tg?.ready?.();
+        tg?.expand?.();
 
         getJoinParams(tg.initData).then(setRoomData);
     }, []);
@@ -61,7 +58,7 @@ export default function CallPage() {
 
                             {isReady && !preJoin && (
                                 <div className="prejoinWrap">
-                                    <CustomPreJoin defaultName="Guest" onJoin={(v) => setPreJoin(v)} />
+                                    <CustomPreJoin onJoin={(v) => setPreJoin(v)} />
                                 </div>
                             )}
                         </div>
