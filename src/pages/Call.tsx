@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { LiveKitRoom } from "@livekit/components-react";
+import {LiveKitRoom, RoomAudioRenderer} from "@livekit/components-react";
 import WebApp from "@twa-dev/sdk";
 import type { GetJoinRoomParamsResponseDto } from "../services/interfaces.ts";
 import { getJoinParams } from "../services/api.ts";
@@ -47,11 +47,15 @@ export default function CallPage() {
                                     <LiveKitRoom
                                         serverUrl={roomData!.serverUrl}
                                         token={roomData!.token}
-                                        audio={{ deviceId: preJoin.audioDeviceId }}
+                                        audio={preJoin.audioEnabled ? { deviceId: preJoin.audioDeviceId } : false}
                                         video={false}
+                                        connect={true}
                                         onError={(err) => console.error("Failed to connect: ", err)}
                                     >
-                                        <CallUI/>
+                                        {/* ВОТ ЭТОГО ТЕБЕ НЕ ХВАТАЛО */}
+                                        <RoomAudioRenderer />
+
+                                        <CallUI />
                                     </LiveKitRoom>
                                 </div>
                             )}
@@ -65,7 +69,6 @@ export default function CallPage() {
                     </div>
                 </div>
 
-                {/* оставь только один Tip — лучше тут, а внутри CustomPreJoin можно убрать */}
                 <div className="hint">Tip: use headphones to avoid echo</div>
             </div>
         </div>
