@@ -80,7 +80,7 @@ export function CallUI() {
                         <div key={p.identity} className="tg-user">
                             <div className="tg-avatar">👤</div>
                             <div className="tg-name">
-                                {p.name || "Participant"}
+                                {p.identity || "Participant"}
                             </div>
                             <div className="tg-state">
                                 {muted ? "Muted": speaking ? "Speaking" : "Listening"}
