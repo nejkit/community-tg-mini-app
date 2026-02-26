@@ -9,6 +9,7 @@ import { ConnectionState } from "livekit-client";
 import "./styles.css";
 import WebApp from "@twa-dev/sdk";
 import {Alert} from "../Allert/Allert.tsx";
+import {useTranslation} from "react-i18next";
 
 export function CallUI() {
     const room = useRoomContext();
@@ -18,6 +19,7 @@ export function CallUI() {
     const remoteParticipants = participants.filter(
         (p) => !p.isLocal
     );
+    const {t} = useTranslation();
 
     const [showDevices, setShowDevices] = useState(false);
 
@@ -43,17 +45,17 @@ export function CallUI() {
     }
 
     const statusText = useMemo(() => {
-        if (conn === ConnectionState.Connecting) return "Connecting…";
-        if (conn === ConnectionState.Reconnecting) return "Reconnecting…";
-        if (conn === ConnectionState.Disconnected) return "Disconnected";
-        return "Connected";
-    }, [conn]);
+        if (conn === ConnectionState.Connecting) return t('connecting_status');
+        if (conn === ConnectionState.Reconnecting) return t('reconnect_status');
+        if (conn === ConnectionState.Disconnected) return t('disconnected_status');
+        return t('connected_status');
+    }, [conn, t]);
 
     return (
         <div className="tg-room">
             {/* Header */}
             <header className="tg-room__header">
-                <div className="tg-room__title">Voice room</div>
+                <div className="tg-room__title">{t('voice_room')}</div>
                 <div className="tg-room__status">{statusText}</div>
             </header>
             <Alert/>
@@ -63,10 +65,10 @@ export function CallUI() {
                 <div className="tg-user is-self">
                     <div className="tg-avatar">🧑</div>
                     <div className="tg-name">
-                        {localParticipant?.name || "You"}
+                        {localParticipant?.name || t('you_call_caption')}
                     </div>
                     <div className="tg-state">
-                        {isMuted ? "Muted" : "Speaking"}
+                        {isMuted ? t('muted_status') : t('speaking_status')}
                     </div>
                 </div>
 
@@ -80,10 +82,10 @@ export function CallUI() {
                         <div key={p.identity} className="tg-user">
                             <div className="tg-avatar">👤</div>
                             <div className="tg-name">
-                                {p.identity || "Participant"}
+                                {p.identity || t('participant_default_name')}
                             </div>
                             <div className="tg-state">
-                                {muted ? "Muted": speaking ? "Speaking" : "Listening"}
+                                {muted ? t('muted_status'): speaking ? t('speaking_status') : t('listening_status')}
                             </div>
                         </div>
                     );
@@ -97,7 +99,7 @@ export function CallUI() {
                     onClick={toggleMute}
                     disabled={!isConnected}
                 >
-                    {isMuted ? "🔇 Unmute" : "🎙 Mute"}
+                    {isMuted ? t('unmute_button') : t('mute_button')}
                 </button>
 
                 <button
@@ -105,7 +107,7 @@ export function CallUI() {
                     onClick={() => setShowDevices(true)}
                     disabled={!isConnected}
                 >
-                    Microphone
+                    {t('microphone_button')}
                 </button>
 
                 <button
@@ -115,7 +117,7 @@ export function CallUI() {
                         closeMiniApp()
                     }}
                 >
-                    Leave room
+                    {t('leave_room_button')}
                 </button>
             </section>
 
@@ -135,6 +137,7 @@ function DeviceSheet({
     onPick: (id: string) => void;
 }) {
     const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
+    const {t}= useTranslation();
 
     useEffect(() => {
         let mounted = true;
@@ -155,7 +158,7 @@ function DeviceSheet({
         <div className="tg-sheet" onClick={onClose}>
             <div className="tg-sheet__panel" onClick={(e) => e.stopPropagation()}>
                 <div className="tg-sheet__handle"/>
-                <div className="tg-sheet__title">Microphone</div>
+                <div className="tg-sheet__title">{t('microphone_label')}</div>
 
                 {devices.map((d, i) => (
                     <button
@@ -163,12 +166,12 @@ function DeviceSheet({
                         className="tg-sheet__item"
                         onClick={() => onPick(d.deviceId)}
                     >
-                        {d.label || `Microphone ${i + 1}`}
+                        {d.label || `${t('microphone_label')}: ${i + 1}`}
                     </button>
                 ))}
 
                 <button className="tg-sheet__close" onClick={onClose}>
-                    Close
+                    {t('close_button')}
                 </button>
             </div>
         </div>

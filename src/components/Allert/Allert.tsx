@@ -10,6 +10,7 @@ import {
     useRoomContext,
 } from "@livekit/components-react";
 import "./styles.css";
+import {useTranslation} from "react-i18next";
 
 /* =========================
    Types
@@ -60,6 +61,7 @@ function closeTelegramApp(delay = 0) {
 export function Alert() {
     const room = useRoomContext();
     const { localParticipant } = useLocalParticipant();
+    const {t} = useTranslation();
 
     const [alerts, setAlerts] = useState<Alert[]>([]);
 
@@ -85,9 +87,9 @@ export function Alert() {
 
             if (fatal) {
                 pushAlert({
-                    message: "Room closed. The call has ended.",
+                    message: `${t('fatal_connection_error')} ${reason?.toString() ?? t('unknown reason')}`,
                     type: "error",
-                    submitLabel: "Exit",
+                    submitLabel: t('exit_button'),
                     onSubmit: () => {
                         room.disconnect();
                         closeTelegramApp();
@@ -95,7 +97,7 @@ export function Alert() {
                 });
             } else {
                 pushAlert({
-                    message: `Disconnected: ${reason?.toString() ?? "unknown reason"}`,
+                    message: `${t('connection_error')}: ${reason?.toString() ?? t('unknown reason')}`,
                     type: "warning",
                 });
             }
@@ -103,35 +105,35 @@ export function Alert() {
 
         const onReconnecting = () => {
             pushAlert({
-                message: "Reconnecting…",
+                message: t('reconnecting'),
                 type: "warning",
             });
         };
 
         const onReconnected = () => {
             pushAlert({
-                message: "Reconnected",
+                message: t('reconnected'),
                 type: "info",
             });
         };
 
         const onParticipantConnected = (p: any) => {
             pushAlert({
-                message: `${p.name || p.identity} joined`,
+                message: `${p.name || p.identity} ${t('participant_connected')}`,
                 type: "info",
             });
         };
 
         const onParticipantDisconnected = (p: any) => {
             pushAlert({
-                message: `${p.name || p.identity} left`,
+                message: `${p.name || p.identity} ${t('participant_disconnected')}`,
                 type: "warning",
             });
         };
 
         const onMediaDevicesChanged = () => {
             pushAlert({
-                message: "Audio devices changed",
+                message: t('audio_devices_changed'),
                 type: "info",
             });
         };
@@ -139,7 +141,7 @@ export function Alert() {
         const onMediaDevicesError = (err: Error) => {
             pushAlert(
                 {
-                    message: `Media device error: ${err.message}`,
+                    message: `${t('media_devices_error')}: ${err.message}`,
                     type: "error",
                 },
                 6000
@@ -151,7 +153,16 @@ export function Alert() {
         const onTrackMuted = (pub: any) => {
             if (pub.source === Track.Source.Microphone) {
                 pushAlert({
-                    message: "Microphone muted",
+                    message: t('microphone_muted'),
+                    type: "warning",
+                });
+            }
+        };
+
+        const onTrackUnmuted = (pub: any) => {
+            if (pub.source === Track.Source.Microphone) {
+                pushAlert({
+                    message: t('microphone_unmuted'),
                     type: "warning",
                 });
             }
@@ -168,6 +179,7 @@ export function Alert() {
         room.on(RoomEvent.MediaDevicesError, onMediaDevicesError);
 
         localParticipant.on(ParticipantEvent.TrackMuted, onTrackMuted);
+        localParticipant.on(ParticipantEvent.TrackUnmuted, onTrackUnmuted);
 
         return () => {
             room.off(RoomEvent.Disconnected, onDisconnected);
@@ -179,8 +191,9 @@ export function Alert() {
             room.off(RoomEvent.MediaDevicesError, onMediaDevicesError);
 
             localParticipant.off(ParticipantEvent.TrackMuted, onTrackMuted);
+            localParticipant.off(ParticipantEvent.TrackUnmuted, onTrackUnmuted);
         };
-    }, [room, localParticipant]);
+    }, [room, localParticipant, t]);
 
     /* =========================
        Render

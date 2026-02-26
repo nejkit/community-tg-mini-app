@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import "./styles.css";
+import {useTranslation} from "react-i18next";
 
 type Props = {
     onJoin: (v: {
@@ -19,6 +20,7 @@ export function CustomPreJoin({ onJoin }: Props) {
     const [audioDeviceId, setAudioDeviceId] = useState("");
     const [permGranted, setPermGranted] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const {t} = useTranslation();
 
     async function loadDevices() {
         const list = await navigator.mediaDevices.enumerateDevices();
@@ -26,7 +28,7 @@ export function CustomPreJoin({ onJoin }: Props) {
             .filter((d) => d.kind === "audioinput")
             .map((d, i) => ({
                 deviceId: d.deviceId,
-                label: d.label || `Microphone ${i + 1}`,
+                label: d.label || `${t('microphone')} ${i + 1}`,
             }));
 
         setDevices(mics);
@@ -69,8 +71,8 @@ export function CustomPreJoin({ onJoin }: Props) {
     return (
         <div className="tg-prejoin">
             <header className="tg-prejoin__header">
-                <h1>Voice room</h1>
-                <p>Connect and talk instantly</p>
+                <h1>{t('voice_room')}</h1>
+                <p>{t('connect_and_talk_instantly')}</p>
             </header>
 
             <main className="tg-prejoin__content">
@@ -79,18 +81,18 @@ export function CustomPreJoin({ onJoin }: Props) {
                     className={`tg-mic-toggle ${audioEnabled ? "is-on" : "is-off"}`}
                     onClick={toggleMic}
                 >
-                    {audioEnabled ? "🎙 Microphone on" : "🔇 Microphone off"}
+                    {audioEnabled ? <span>{t('microphone_on')}</span> : <span>{t('microphone_off')}</span>}
                 </button>
 
                 <label className="tg-field">
-                    <span>Microphone</span>
+                    <span>{t('microphone_label')}</span>
                     <select
                         value={audioDeviceId}
                         disabled={!audioEnabled || !permGranted}
                         onChange={(e) => setAudioDeviceId(e.target.value)}
                     >
                         {!audioEnabled && (
-                            <option value="">Microphone is off</option>
+                            <option value="">{t('microphone_is_off')}</option>
                         )}
                         {devices.map((d) => (
                             <option key={d.deviceId} value={d.deviceId}>
@@ -112,12 +114,12 @@ export function CustomPreJoin({ onJoin }: Props) {
                         })
                     }
                 >
-                    Join
+                    {t('join_button')}
                 </button>
             </main>
 
             <footer className="tg-prejoin__footer">
-                Tip: use headphones to reduce echo
+                {t('tip_use_quality_sound')}
             </footer>
         </div>
     );

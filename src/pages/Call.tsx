@@ -6,6 +6,8 @@ import { getJoinParams } from "../services/api.ts";
 import "./call.css";
 import { CustomPreJoin } from "../components/PreJoin/PreJoin.tsx";
 import {CallUI} from "../components/Room/Room.tsx";
+import {useTranslation} from "react-i18next";
+import i18n from "../i18n.ts";
 
 const tg = (WebApp as any)?.default ?? WebApp;
 
@@ -15,9 +17,11 @@ export default function CallPage() {
         audioDeviceId?: string;
     } | null>(null);
 
+    const {t} = useTranslation();
     const [roomData, setRoomData] = useState<GetJoinRoomParamsResponseDto | undefined>();
 
     useEffect(() => {
+        i18n.changeLanguage(tg?.initDataUnsafe?.start_param)
         tg?.ready?.();
         tg?.expand?.();
 
@@ -38,7 +42,7 @@ export default function CallPage() {
                             {!isReady && (
                                 <div className="loading">
                                     <div className="spinner" />
-                                    <div>Preparing room…</div>
+                                    <div>{t('loading_room_spinner')}</div>
                                 </div>
                             )}
 
@@ -69,7 +73,7 @@ export default function CallPage() {
                     </div>
                 </div>
 
-                <div className="hint">Tip: use headphones to avoid echo</div>
+                <div className="hint">{t('tip_use_quality_sound')}</div>
             </div>
         </div>
     );
