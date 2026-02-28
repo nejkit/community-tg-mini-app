@@ -21,11 +21,14 @@ export default function CallPage() {
     const [roomData, setRoomData] = useState<GetJoinRoomParamsResponseDto | undefined>();
 
     useEffect(() => {
-        i18n.changeLanguage(tg?.initDataUnsafe?.start_param)
         tg?.ready?.();
         tg?.expand?.();
 
-        getJoinParams(tg.initData).then(setRoomData);
+        getJoinParams(tg.initData).then(x => {
+            alert(JSON.stringify(x))
+            i18n.changeLanguage(x?.language)
+            setRoomData(x)
+        });
     }, []);
 
     const isReady = useMemo(
