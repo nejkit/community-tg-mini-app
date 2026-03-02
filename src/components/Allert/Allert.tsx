@@ -87,7 +87,7 @@ export function Alert() {
 
             if (fatal) {
                 pushAlert({
-                    message: `${t('fatal_connection_error')} ${reason?.toString() ?? t('unknown reason')}`,
+                    message: `${t('fatal_connection_error')} ${reason?.toString() ?? t('unknown_reason')}`,
                     type: "error",
                     submitLabel: t('exit_button'),
                     onSubmit: () => {
@@ -97,7 +97,7 @@ export function Alert() {
                 });
             } else {
                 pushAlert({
-                    message: `${t('connection_error')}: ${reason?.toString() ?? t('unknown reason')}`,
+                    message: `${t('connection_error')}: ${reason?.toString() ?? t('unknown_reason')}`,
                     type: "warning",
                 });
             }
