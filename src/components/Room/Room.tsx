@@ -29,7 +29,11 @@ export function CallUI() {
     const isConnected = conn === ConnectionState.Connected;
 
     async function toggleMute() {
-        await localParticipant?.setMicrophoneEnabled(isMuted);
+        try {
+            await localParticipant?.setMicrophoneEnabled(isMuted);
+        } catch (err) {
+            console.error("Failed to toggle mute:", err);
+        }
     }
 
     async function setMic(deviceId: string) {

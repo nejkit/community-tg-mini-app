@@ -2,7 +2,8 @@ import axios, {type AxiosError, type AxiosInstance, type AxiosRequestConfig, typ
 
 const getClient = () => {
     return axios.create({
-        baseURL: "https://api.nik.vn.ua"
+        baseURL: "https://api.nik.vn.ua",
+        timeout: 10000,
     })
 }
 

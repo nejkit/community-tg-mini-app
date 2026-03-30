@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     RoomEvent,
     ParticipantEvent,
@@ -64,6 +64,13 @@ export function Alert() {
     const {t} = useTranslation();
 
     const [alerts, setAlerts] = useState<Alert[]>([]);
+    const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+    useEffect(() => {
+        return () => {
+            timeoutsRef.current.forEach(clearTimeout);
+        };
+    }, []);
 
     function pushAlert(alert: Omit<Alert, "id">, ttl = 4000) {
         const id = ++alertId;
@@ -71,9 +78,10 @@ export function Alert() {
 
         // если нет submit handler — автозакрываем
         if (!alert.onSubmit) {
-            setTimeout(() => {
+            const tid = setTimeout(() => {
                 setAlerts((a) => a.filter((x) => x.id !== id));
             }, ttl);
+            timeoutsRef.current.push(tid);
         }
     }
 
@@ -202,7 +210,7 @@ export function Alert() {
     return (
         <div className="tg-alerts">
             {alerts.map((a) => (
-                <div className={`tg-alert tg-alert--${a.type}`}>
+                <div key={a.id} className={`tg-alert tg-alert--${a.type}`}>
                     <div className="tg-alert__icon"/>
                     <div className="tg-alert__content">
                         <div className="tg-alert__text">{a.message}</div>

@@ -19,15 +19,17 @@ export default function CallPage() {
 
     const {t} = useTranslation();
     const [roomData, setRoomData] = useState<GetJoinRoomParamsResponseDto | undefined>();
+    const [loadError, setLoadError] = useState<string | null>(null);
 
     useEffect(() => {
         tg?.ready?.();
         tg?.expand?.();
 
         getJoinParams(tg.initData).then(x => {
-            alert(JSON.stringify(x))
-            i18n.changeLanguage(x?.language)
-            setRoomData(x)
+            if (x?.language) i18n.changeLanguage(x.language);
+            setRoomData(x);
+        }).catch(() => {
+            setLoadError(t('loading_error'));
         });
     }, []);
 
@@ -42,10 +44,16 @@ export default function CallPage() {
                 <div className="card">
                     <div className="cardInner">
                         <div className="cardContent">
-                            {!isReady && (
+                            {!isReady && !loadError && (
                                 <div className="loading">
                                     <div className="spinner" />
                                     <div>{t('loading_room_spinner')}</div>
+                                </div>
+                            )}
+
+                            {loadError && (
+                                <div className="loading">
+                                    <div>{loadError}</div>
                                 </div>
                             )}
 

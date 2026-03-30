@@ -42,20 +42,22 @@ export function CustomPreJoin({ onJoin }: Props) {
             setError(null);
             await navigator.mediaDevices.getUserMedia({ audio: true });
             setPermGranted(true);
+            setAudioEnabled(true);
             await loadDevices();
         } catch {
-            setError("Microphone access denied");
+            setError(t('microphone_access_denied'));
             setPermGranted(false);
             setAudioEnabled(false);
         }
     }
 
-    function toggleMic() {
-        setAudioEnabled((prev) => {
-            const next = !prev;
-            if (next) enableMic();
-            return next;
-        });
+    async function toggleMic() {
+        const next = !audioEnabled;
+        if (next) {
+            await enableMic();
+        } else {
+            setAudioEnabled(false);
+        }
     }
 
     useEffect(() => {
