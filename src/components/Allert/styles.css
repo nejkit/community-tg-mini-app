@@ -11,7 +11,7 @@
 
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     pointer-events: none;
 }
 
@@ -24,16 +24,23 @@
     gap: 10px;
 
     padding: 12px 14px;
-    border-radius: 14px;
+    border-radius: 16px;
 
-    background: #1c1c1e;
-    color: #fff;
+    background: var(--tg-secondary-bg, #1c1c1e);
+    color: var(--tg-text, #fff);
+
+    backdrop-filter: blur(12px);
 
     box-shadow:
-            0 6px 20px rgba(0,0,0,0.35),
+            0 6px 24px rgba(0,0,0,0.35),
             0 0 0 1px rgba(255,255,255,0.06);
 
     animation: tg-alert-in 0.22s ease-out;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tg-alert:active {
+    transform: scale(0.98);
 }
 
 /* ===== Icon ===== */
@@ -43,6 +50,8 @@
     margin-top: 2px;
     flex-shrink: 0;
     border-radius: 50%;
+
+    box-shadow: 0 0 10px currentColor;
 }
 
 /* ===== Content ===== */
@@ -62,41 +71,81 @@
     align-self: flex-start;
 
     border: none;
-    background: rgba(255,255,255,0.12);
-    color: #fff;
+    background: rgba(255,255,255,0.08);
+    color: var(--tg-link-color, #4da6ff);
 
     padding: 6px 10px;
     border-radius: 10px;
 
     font-size: 13px;
     font-weight: 600;
+
+    transition: all 0.15s ease;
+}
+
+.tg-alert__action:hover {
+    background: rgba(255,255,255,0.14);
 }
 
 .tg-alert__action:active {
-    transform: scale(0.96);
+    transform: scale(0.95);
 }
 
 /* ===== Types ===== */
+.tg-alert--info {
+    border-left: 3px solid #0a84ff;
+}
+
 .tg-alert--info .tg-alert__icon {
     background: #0a84ff;
+    color: #0a84ff;
+}
+
+.tg-alert--warning {
+    border-left: 3px solid #f59e0b;
 }
 
 .tg-alert--warning .tg-alert__icon {
     background: #f59e0b;
+    color: #f59e0b;
+}
+
+.tg-alert--error {
+    border-left: 3px solid #ff453a;
 }
 
 .tg-alert--error .tg-alert__icon {
     background: #ff453a;
+    color: #ff453a;
+}
+
+/* ===== Extra polish ===== */
+.tg-alert--info {
+    box-shadow:
+            0 6px 24px rgba(10,132,255,0.15),
+            0 0 0 1px rgba(255,255,255,0.05);
+}
+
+.tg-alert--warning {
+    box-shadow:
+            0 6px 24px rgba(245,158,11,0.15),
+            0 0 0 1px rgba(255,255,255,0.05);
+}
+
+.tg-alert--error {
+    box-shadow:
+            0 6px 24px rgba(255,69,58,0.2),
+            0 0 0 1px rgba(255,255,255,0.05);
 }
 
 /* ===== Animation ===== */
 @keyframes tg-alert-in {
     from {
         opacity: 0;
-        transform: translateY(-6px);
+        transform: translateY(-10px) scale(0.98);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
